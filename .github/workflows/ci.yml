@@ -1,7 +1,5 @@
 name: CI testing
-on:
-  branches:
-    - master
+on: push
 jobs:
   test:
     runs-on: ubuntu-latest
