@@ -1,7 +1,8 @@
 version: '3.7'
 services:
   api:
-    build: 
+    build:
+      context: ./
       dockerfile: Dockerfile
     #command: uvicorn app.main:app --reload 
     ports:
