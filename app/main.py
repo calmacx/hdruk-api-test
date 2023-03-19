@@ -64,3 +64,6 @@ def get_(page: int = Query(gt=0,default=1,description='Page number to retrieve')
 	#return the data
 	return retval
 
+@app.get("/")
+def home():
+	return "Hello HDRUK"
