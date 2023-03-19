@@ -25,5 +25,35 @@ python -m pip install pip --upgrade
 python -m pip install -r requirements.txt
 ```
 
+## Start the App 
+
+```
+uvicorn app.main:app --reload
+```
+
+## Examples
+
+### Command Line 
+
+```
+curl -X 'GET' \
+  'http://127.0.0.1:8000/pages/?page=2&total=25&omit=body' \
+  -H 'accept: application/json'
+```
+
+### Python Requests
+```
+>> import requests
+>> requests.get('http://127.0.0.1:8000/pages/?page=2&total=2&omit=body').json()
+[{'postId': 1, 'id': 3, 'name': 'odio adipisci rerum aut animi', 'email': 'Nikita@garfield.biz'}, {'postId': 1, 'id': 4, 'name': 'alias odio sit', 'email': 'Lew@alysha.tv'}]
+```
+
+### Docs
+
+Nativate to the automatically generated [docs](http://127.0.0.1:8000/docs)
+
+You will be able to see how to manually test and play with the API via Swagger
+
+![image](https://user-images.githubusercontent.com/69473770/226174312-29f62971-87df-4ae5-91ee-12d0daebaedf.png)
 
 
