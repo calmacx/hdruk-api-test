@@ -2,7 +2,17 @@
 
 ## Introduction
 
+* This service (API endpoint) returns paginated results with options for:
+   * `total` - the total number of results to show (default 25)
+   * `page` - the page number of the results (default 1)
+   * `omit` - comma seperated list of fields to exclude from the returned list (
 * Tried and tested using Python3.8
+* Main code is in `app/main.py`
+* Code tests are in `app/tests.py`
+* Github CI for checking pylint and running the code tests is in `.github/workflows/ci.yml`
+   * Github action is generated to test these two stages in python 3.8 for each push
+* Additional docker file is found in `Dockerfile`
+* Additional in
 
 ## Installing 
 
