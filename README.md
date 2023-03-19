@@ -14,9 +14,9 @@
 * Additional docker file is found in `Dockerfile` or can use a `docker-compose` wrapper
 * Additional simple instructions for deploying to GCP app engine 
 
-I chose to write this mini-api in FastAPI because I've used it once before and found it to be the most straight forward and __fast__ (in the sense of getting started) approach for a simple API. I'm more comfortable with Flask and a bit of Django for python based backends/APIs, though in the future I'd probably be more inclined to use FastAPI more and learn more about it.
+I chose to write this mini-api using [FastAPI](https://fastapi.tiangolo.com/) because I've used it once before and found it to be the most straight forward and __fast__ (in the sense of getting started) approach for a simple API. I'm more comfortable with Flask and a bit of Django for python based backends/APIs, though in the future I'd probably be more inclined to use FastAPI again and learn more about it.
 
-On top of the fact that the automatically generated documentation is super useful, I used FastAPI to demonstrate how I would code a simple API up with the expectation that it'd likely have to be extended much further. It's a big open-source project that is maintained by lots of other people with a tonne of documentation, so it'd be easy for someone else working on the code to pick it up and extend it.
+On top of the fact that the automatically generated documentation (`<api_url>/docs`) is super useful, I used FastAPI to demonstrate how I would code a simple API up with the expectation that it'd likely have to be extended much further. It's a big open-source project that is maintained by lots of other people with a tonne of documentation, so it'd be easy for someone else working on the code to pick it up and extend it.
 
 ## Installing 
 
@@ -26,7 +26,7 @@ git clone https://github.com/calmacx/hdruk-api-test.git
 cd hdruk-api-test
 ```
 
-Setup a virtual environment, personally I use `pyenv`:
+Setup a virtual environment (personally I use `pyenv`):
 ```
 pyenv local 3.8.0
 python -m venv .
@@ -41,14 +41,26 @@ python -m pip install -r requirements.txt
 
 ## Start the App 
 
+To start for development (and debateable might be production ready to use uvicorn - though I'm not 100% sure on best practices here)..
 ```
-uvicorn app.main:app --reload
+$ uvicorn app.main:app --reload
+INFO:     Will watch for changes in these directories: ['/Users/calummacdonald/HDRUK/hdruk-api-test']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [70939] using WatchFiles
+INFO:     Started server process [70956]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
 ```
 
 ## Examples
 
+Once running you can test the API end point at `http://127.0.0.1:8000/pages`
+
+The acceptance criteria should work via queries, e.g. `<url>/pages/?page=2&total=25&omit=body,email`
+
 ### Command Line 
 
+Use bash curl to get a response...
 ```
 curl -X 'GET' \
   'http://127.0.0.1:8000/pages/?page=2&total=25&omit=body' \
@@ -56,15 +68,27 @@ curl -X 'GET' \
 ```
 
 ### Python Requests
+
+Using python to get a response...
 ```
 >> import requests
 >> requests.get('http://127.0.0.1:8000/pages/?page=2&total=2&omit=body').json()
 [{'postId': 1, 'id': 3, 'name': 'odio adipisci rerum aut animi', 'email': 'Nikita@garfield.biz'}, {'postId': 1, 'id': 4, 'name': 'alias odio sit', 'email': 'Lew@alysha.tv'}]
 ```
 
+The API by default will be able to handle errors/bad inputs:
+```
+>>> requests.get('http://127.0.0.1:8000/pages/?page=2&total=2&omit=body,blah').json()  
+{'detail': "{'blah'} not valid field(s) to omit"}
+
+>>> requests.get('http://127.0.0.1:8000/pages/?page=-100&total=2&omit=body').json()  
+{'detail': [{'loc': ['query', 'page'], 'msg': 'ensure this value is greater than 0', 'type': 'value_error.number.not_gt', 'ctx': {'limit_value': 0}}]}
+```
+
+
 ### Docs
 
-Nativate to the automatically generated [docs](http://127.0.0.1:8000/docs)
+FastAPI automatically generated some documentation on how to use the API. Nativate to the automatically generated [docs at http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
 
 You will be able to see how to manually test and play with the API via Swagger
 
